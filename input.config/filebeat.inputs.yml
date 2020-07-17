@@ -1,0 +1,41 @@
+- type: log
+  enabled: true
+  paths:
+    - "/var/log/nginx/${PROJECT_NAME}.access.log"
+  tags: ["nginx", "accesslog"]
+  exclude_lines: [ "^- ", "GET \\/ HTTP.*400.*curl\\/" ]
+  exclude_files: [".gz$"]
+  fields:
+    type: accesslog
+    log_source: nginx
+    project_name: ${PROJECT_NAME}
+  fields_under_root: true
+  pipeline: "filebeat-nginx-access"
+
+- type: log
+  enabled: true
+  paths:
+    - "/var/log/nginx/${PROJECT_NAME}.error.log"
+  tags: ["nginx", "errorlog"]
+  exclude_lines: [ "^PHP", "^Stack trace:", "^[#]" ]
+  exclude_files: [".gz$"]
+  fields:
+    type: errorlog
+    log_source: nginx
+    project_name: ${PROJECT_NAME}
+  fields_under_root: true
+  pipeline: "filebeat-nginx-error"
+
+- type: log
+  enabled: true
+  paths:
+    - "/var/log/php/php_errors.log"
+  tags: ["errorlog", "php"]
+  exclude_lines: ["\\sNOTICE\\s", "^(Stack trace:|#\\d+|  thrown)"]
+  exclude_files: [".gz$"]
+  fields:
+    type: errorlog
+    log_source: php
+    platform_name: ${PROJECT_NAME}
+  fields_under_root: true
+  pipeline: "filebeat-php-error"

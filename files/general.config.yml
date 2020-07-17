@@ -1,0 +1,18 @@
+name: ${PROJECT_NAME:myAlternativeName}-${HOSTNAME}
+fields:
+  env: "${ENV}"
+fields_under_root: true
+# general tags
+tags: ["docker", "aws", "${PROJECT_NAME}"]
+setup.template.enabled: false
+# Minimum log level. One of 'debug', 'info', 'warning', or 'error'. The default log level is 'info'
+logging.level: warning
+logging.json: true
+filebeat.config.inputs:
+  enabled: true
+  path: /usr/share/filebeat/input.config/*.yml
+# add locale
+processors:
+- add_locale: ~
+- add_cloud_metadata: ~
+- add_docker_metadata: ~

@@ -1,0 +1,6 @@
+cloud.id: "${CLOUD_ID}"
+cloud.auth: "${CLOUD_AUTH}"
+output.elasticsearch:
+  enabled: true
+  worker: 2
+  template.overwrite: false
