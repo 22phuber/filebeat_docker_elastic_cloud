@@ -1,0 +1,13 @@
+- type: log
+  enabled: true
+  paths:
+    - "/var/log/apache/${PROJECT_NAME}.access.log"
+  tags: ["apache", "accesslog"]
+  exclude_lines: [ "^- " ]
+  exclude_files: [".gz$"]
+  fields:
+    type: accesslog
+    log_source: apache
+    project_name: ${PROJECT_NAME}
+  fields_under_root: true
+  pipeline: "filebeat-apache-access"
